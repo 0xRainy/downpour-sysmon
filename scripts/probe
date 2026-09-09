@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sample CPU, RAM, and GPU telemetry for local.sysmon."""
+"""Sample CPU, RAM, and GPU telemetry for 0xrainy.sysmon."""
 from __future__ import annotations
 
 import glob
