@@ -42,6 +42,15 @@ function formatTemp(celsius) {
   return String(Math.round(Number(celsius) || 0)) + "°"
 }
 
+function formatFreq(mhz) {
+  var n = Number(mhz)
+  if (!isFinite(n) || n <= 0)
+    return ""
+  if (n >= 1000)
+    return (Math.round((n / 1000) * 100) / 100).toFixed(2) + " GHz"
+  return String(Math.round(n)) + " MHz"
+}
+
 function formatBytes(bytes) {
   var n = Number(bytes) || 0
   if (n <= 0)

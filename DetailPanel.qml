@@ -7,6 +7,8 @@ KeyboardPanel {
   id: root
   property string focusMetric: "cpu"
   property var sample: Model.emptySample()
+  property bool showCpuFreq: false
+  property bool showGpuFreq: false
 
   signal closeRequested()
 
@@ -37,6 +39,13 @@ KeyboardPanel {
         valueText: gpu.tempC === null || gpu.tempC === undefined ? "n/a" : Model.formatTemp(gpu.tempC),
         bar: gpu.tempC === null || gpu.tempC === undefined ? 0 : Math.min(1, (Number(gpu.tempC) || 0) / 100)
       }]
+      if (root.showGpuFreq && gpu.freqMHz) {
+        rows.push({
+          label: "Clock",
+          valueText: Model.formatFreq(gpu.freqMHz),
+          bar: 0
+        })
+      }
       if (gpu.usedBytes && gpu.totalBytes) {
         rows.push({
           label: "VRAM",
@@ -57,14 +66,21 @@ KeyboardPanel {
       var gpu = sample.gpu
       if (!gpu) return "GPU"
       var name = gpu.name ? String(gpu.name) : "GPU"
-      return name + "  " + Model.formatPercent(gpu.percent) + "  " + Model.formatTemp(gpu.tempC)
+      var title = name + "  " + Model.formatPercent(gpu.percent) + "  " + Model.formatTemp(gpu.tempC)
+      if (root.showGpuFreq && gpu.freqMHz)
+        title += "  " + Model.formatFreq(gpu.freqMHz)
+      return title
     }
     return "System"
   }
 
+  readonly property bool showCoreFreq: root.showCpuFreq && (focusMetric === "cpu" || focusMetric === "cpuTemp")
+  readonly property real freqColW: showCoreFreq ? Style.space(64) : 0
+  readonly property real labelColW: Style.space(72)
+
   centerOnBar: false
   focusTarget: keyCatcher
-  contentWidth: fittedContentWidth(Style.space(300))
+  contentWidth: fittedContentWidth(showCoreFreq ? Style.space(340) : Style.space(300))
   contentHeight: fittedContentHeight(bodyCol.implicitHeight + Style.space(12))
 
   PanelKeyCatcher {
@@ -106,7 +122,19 @@ KeyboardPanel {
             spacing: Style.space(8)
 
             Text {
-              width: Style.space(72)
+              visible: root.showCoreFreq
+              width: root.freqColW
+              text: modelData.freqMHz ? Model.formatFreq(modelData.freqMHz) : ""
+              color: root.bar ? root.bar.foreground : Color.foreground
+              font.family: root.bar ? root.bar.fontFamily : Style.font.family
+              font.pixelSize: Style.font.caption
+              opacity: 0.55
+              elide: Text.ElideRight
+              anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Text {
+              width: root.labelColW
               text: String(modelData.label || ("Core " + modelData.id))
               color: root.bar ? root.bar.foreground : Color.foreground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
@@ -116,7 +144,8 @@ KeyboardPanel {
             }
 
             Rectangle {
-              width: parent.width - Style.space(72) - Style.space(52) - Style.space(16)
+              width: parent.width - root.freqColW - root.labelColW - Style.space(52)
+                   - Style.space(8) * (root.showCoreFreq ? 3 : 2)
               height: Style.space(8)
               radius: 3
               anchors.verticalCenter: parent.verticalCenter

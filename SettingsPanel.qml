@@ -201,6 +201,15 @@ KeyboardPanel {
           toggleOn: root.boolSetting("showCpuTempGraph", true)
           onToggled: root.setBool("showCpuTempGraph", !root.boolSetting("showCpuTempGraph", true))
         }
+        SettingRow {
+          rowWidth: bodyCol.innerW
+          foreground: root.fg
+          fontFamily: root.fontFam
+          label: "Per-core frequency"
+          showToggle: true
+          toggleOn: root.boolSetting("showCpuFreq", false)
+          onToggled: root.setBool("showCpuFreq", !root.boolSetting("showCpuFreq", false))
+        }
 
         Text {
           text: "RAM"
@@ -272,6 +281,15 @@ KeyboardPanel {
           showToggle: true
           toggleOn: root.boolSetting("showGpuTempGraph", true)
           onToggled: root.setBool("showGpuTempGraph", !root.boolSetting("showGpuTempGraph", true))
+        }
+        SettingRow {
+          rowWidth: bodyCol.innerW
+          foreground: root.fg
+          fontFamily: root.fontFam
+          label: "GPU frequency"
+          showToggle: true
+          toggleOn: root.boolSetting("showGpuFreq", false)
+          onToggled: root.setBool("showGpuFreq", !root.boolSetting("showGpuFreq", false))
         }
       }
     }

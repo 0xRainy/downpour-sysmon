@@ -33,6 +33,8 @@ BarWidget {
   readonly property bool showRamGraph: setting("showRamGraph", true) !== false
   readonly property bool showGpuGraph: setting("showGpuGraph", true) !== false
   readonly property bool showGpuTempGraph: setting("showGpuTempGraph", true) !== false
+  readonly property bool showCpuFreq: setting("showCpuFreq", false) === true
+  readonly property bool showGpuFreq: setting("showGpuFreq", false) === true
 
   readonly property bool showCpu: setting("showCpu", true) !== false
   readonly property bool showCpuTemp: setting("showCpuTemp", true) !== false
@@ -147,6 +149,8 @@ BarWidget {
     open: root.detailVisible
     focusMetric: root.detailMetric
     sample: root.sample
+    showCpuFreq: root.showCpuFreq
+    showGpuFreq: root.showGpuFreq
     onCloseRequested: root.detailVisible = false
   }
 

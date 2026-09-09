@@ -35,7 +35,9 @@
       "showCpuTempGraph": true,
       "showRamGraph": true,
       "showGpuGraph": true,
-      "showGpuTempGraph": true
+      "showGpuTempGraph": true,
+      "showCpuFreq": false,
+      "showGpuFreq": false
     },
     "schema": [
       {
