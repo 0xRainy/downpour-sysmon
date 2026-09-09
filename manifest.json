@@ -82,11 +82,42 @@
         "defaultValue": 80
       },
       {
+        "key": "showCpu",
+        "type": "boolean",
+        "label": "Show CPU usage chip",
+        "defaultValue": true
+      },
+      {
+        "key": "showCpuTemp",
+        "type": "boolean",
+        "label": "Show CPU temp chip",
+        "defaultValue": true
+      },
+      {
+        "key": "showRam",
+        "type": "boolean",
+        "label": "Show RAM chip",
+        "defaultValue": true
+      },
+      {
+        "key": "showGpu",
+        "type": "boolean",
+        "label": "Show GPU usage chip",
+        "defaultValue": true
+      },
+      {
+        "key": "showGpuTemp",
+        "type": "boolean",
+        "label": "Show GPU temp chip",
+        "defaultValue": true
+      },
+      {
         "key": "showCpuGraph",
         "type": "boolean",
         "label": "CPU usage graph",
         "defaultValue": true
       },
+
       {
         "key": "showCpuTempGraph",
         "type": "boolean",
