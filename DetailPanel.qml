@@ -65,11 +65,7 @@ KeyboardPanel {
     if (focusMetric === "gpu" || focusMetric === "gpuTemp") {
       var gpu = sample.gpu
       if (!gpu) return "GPU"
-      var name = gpu.name ? String(gpu.name) : "GPU"
-      var title = name + "  " + Model.formatPercent(gpu.percent) + "  " + Model.formatTemp(gpu.tempC)
-      if (root.showGpuFreq && gpu.freqMHz)
-        title += "  " + Model.formatFreq(gpu.freqMHz)
-      return title
+      return gpu.name ? String(gpu.name) : "GPU"
     }
     return "System"
   }
