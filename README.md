@@ -1,7 +1,7 @@
 # downpour-sysmon
 
 <p align="center">
-  <img src="preview.png" alt="Per-core CPU usage" width="360">
+  <img src="preview.gif" alt="CPU temp, usage, and settings" width="360">
 </p>
 
 A no-frills system monitor for [Omarchy](https://omarchy.org). One job: show what your machine is doing, then get out of the way.
