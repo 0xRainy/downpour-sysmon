@@ -12,6 +12,25 @@ import time
 from pathlib import Path
 
 
+def read_cpu_name() -> str:
+    name = ""
+    with open("/proc/cpuinfo", encoding="utf-8") as handle:
+        for line in handle:
+            if line.startswith("model name"):
+                name = line.split(":", 1)[1].strip()
+                break
+            if not name and (line.startswith("Hardware") or line.startswith("Model")):
+                name = line.split(":", 1)[1].strip()
+    if not name:
+        return "CPU"
+    for token in ("(R)", "(TM)", "(tm)", " CPU"):
+        name = name.replace(token, "")
+    name = re.sub(r"\s+", " ", name).strip()
+    name = re.sub(r" \d+-Core Processor", "", name)
+    name = re.sub(r" Processor$", "", name)
+    return name or "CPU"
+
+
 def read_stat():
     rows = []
     with open("/proc/stat", encoding="utf-8") as handle:
@@ -236,7 +255,7 @@ def main() -> int:
     b = read_stat()
     cpu_pct, cores = cpu_percents(a, b)
     payload = {
-        "cpu": {"percent": cpu_pct, "cores": cores},
+        "cpu": {"name": read_cpu_name(), "percent": cpu_pct, "cores": cores},
         "cpuTemp": read_coretemp(),
         "ram": read_ram(),
         "gpu": read_gpu(),

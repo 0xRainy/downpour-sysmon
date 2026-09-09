@@ -59,8 +59,10 @@ KeyboardPanel {
   }
 
   readonly property string titleText: {
-    if (focusMetric === "cpu") return "CPU  " + Model.formatPercent(sample.cpu ? sample.cpu.percent : 0)
-    if (focusMetric === "cpuTemp") return "CPU Temp  " + Model.formatTemp(sample.cpuTemp ? sample.cpuTemp.packageC : 0)
+    if (focusMetric === "cpu" || focusMetric === "cpuTemp") {
+      var cpu = sample.cpu
+      return (cpu && cpu.name) ? String(cpu.name) : "CPU"
+    }
     if (focusMetric === "ram") return "RAM  " + Model.formatRam(sample.ram)
     if (focusMetric === "gpu" || focusMetric === "gpuTemp") {
       var gpu = sample.gpu

@@ -2,7 +2,7 @@
 
 function emptySample() {
   return {
-    cpu: { percent: 0, cores: [] },
+    cpu: { name: "CPU", percent: 0, cores: [] },
     cpuTemp: { packageC: 0, cores: [] },
     ram: { percent: 0, usedBytes: 0, totalBytes: 0, availableBytes: 0 },
     gpu: null
@@ -14,8 +14,11 @@ function parseSample(raw) {
     var data = JSON.parse(String(raw || "{}"))
     if (!data || typeof data !== "object")
       return emptySample()
+    var cpu = data.cpu || { percent: 0, cores: [] }
+    if (!cpu.name)
+      cpu.name = "CPU"
     return {
-      cpu: data.cpu || { percent: 0, cores: [] },
+      cpu: cpu,
       cpuTemp: data.cpuTemp || { packageC: 0, cores: [] },
       ram: data.ram || { percent: 0, usedBytes: 0, totalBytes: 0, availableBytes: 0 },
       gpu: data.gpu || null
