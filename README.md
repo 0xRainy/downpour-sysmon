@@ -8,6 +8,13 @@ A no-frills system monitor for [Omarchy](https://omarchy.org). One job: show wha
 
 **CPU · RAM · GPU** — usage and temps as quiet bar chips with optional sparklines. Click a chip for detail (per-core CPU stats). Right-click for settings. Alerts turn red when something’s hot. Polls every second. That’s it.
 
+## Requirements
+
+- **python3** — required (telemetry probe)
+- **nvidia-smi** — optional; enables NVIDIA GPU usage/temp/freq chips when present
+
+No installer, no services, no elevated privileges. The probe only reads local sysfs/`/proc` (and `nvidia-smi` if available).
+
 ## Install
 
 ```sh
