@@ -240,7 +240,8 @@ BarWidget {
         normalColor: root.normalFg
         hotColor: root.hotFg
         fontFamily: root.bar ? root.bar.fontFamily : Style.font.family
-        onClicked: root.openDetail("gpuTemp")
+        // Same combined GPU detail popup as usage.
+        onClicked: root.openDetail("gpu")
         onRightClicked: root.openSettings()
       }
     }

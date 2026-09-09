@@ -23,21 +23,28 @@ KeyboardPanel {
         bar: Math.min(1, (Number(ram.percent) || 0) / 100)
       }]
     }
+    // GPU usage + temp share one detail popup.
     if (focusMetric === "gpu" || focusMetric === "gpuTemp") {
       var gpu = sample.gpu
       if (!gpu)
         return [{ label: "GPU", valueText: "n/a", bar: 0 }]
-      if (focusMetric === "gpu")
-        return [{
-          label: gpu.name || "GPU",
-          valueText: Model.formatPercent(gpu.percent),
-          bar: Math.min(1, (Number(gpu.percent) || 0) / 100)
-        }]
-      return [{
-        label: gpu.name || "GPU",
-        valueText: Model.formatTemp(gpu.tempC),
-        bar: Math.min(1, (Number(gpu.tempC) || 0) / 100)
+      var rows = [{
+        label: "Usage",
+        valueText: Model.formatPercent(gpu.percent),
+        bar: Math.min(1, (Number(gpu.percent) || 0) / 100)
+      }, {
+        label: "Temp",
+        valueText: gpu.tempC === null || gpu.tempC === undefined ? "n/a" : Model.formatTemp(gpu.tempC),
+        bar: gpu.tempC === null || gpu.tempC === undefined ? 0 : Math.min(1, (Number(gpu.tempC) || 0) / 100)
       }]
+      if (gpu.usedBytes && gpu.totalBytes) {
+        rows.push({
+          label: "VRAM",
+          valueText: Model.formatBytes(gpu.usedBytes) + " / " + Model.formatBytes(gpu.totalBytes),
+          bar: Math.min(1, (Number(gpu.usedBytes) || 0) / Math.max(1, Number(gpu.totalBytes) || 1))
+        })
+      }
+      return rows
     }
     return []
   }
@@ -46,8 +53,12 @@ KeyboardPanel {
     if (focusMetric === "cpu") return "CPU  " + Model.formatPercent(sample.cpu ? sample.cpu.percent : 0)
     if (focusMetric === "cpuTemp") return "CPU Temp  " + Model.formatTemp(sample.cpuTemp ? sample.cpuTemp.packageC : 0)
     if (focusMetric === "ram") return "RAM  " + Model.formatRam(sample.ram)
-    if (focusMetric === "gpu") return "GPU  " + (sample.gpu ? Model.formatPercent(sample.gpu.percent) : "n/a")
-    if (focusMetric === "gpuTemp") return "GPU Temp  " + (sample.gpu ? Model.formatTemp(sample.gpu.tempC) : "n/a")
+    if (focusMetric === "gpu" || focusMetric === "gpuTemp") {
+      var gpu = sample.gpu
+      if (!gpu) return "GPU"
+      var name = gpu.name ? String(gpu.name) : "GPU"
+      return name + "  " + Model.formatPercent(gpu.percent) + "  " + Model.formatTemp(gpu.tempC)
+    }
     return "System"
   }
 

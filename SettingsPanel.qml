@@ -44,7 +44,6 @@ KeyboardPanel {
     return count
   }
 
-  // Keep at least one chip visible so settings remain reachable.
   function setMetricVisible(key, wantOn) {
     var currentlyOn = boolSetting(key, true)
     if (!wantOn && currentlyOn && enabledMetricCount() <= 1)
@@ -58,12 +57,12 @@ KeyboardPanel {
 
   readonly property color fg: bar ? bar.foreground : Color.foreground
   readonly property string fontFam: bar ? bar.fontFamily : Style.font.family
-  readonly property real rowW: width > 0 ? Math.max(200, width - Style.space(28)) : Style.space(320)
 
   centerOnBar: false
   focusTarget: keyCatcher
-  contentWidth: fittedContentWidth(Style.space(360))
-  contentHeight: fittedContentHeight(bodyCol.implicitHeight + Style.space(12))
+  contentWidth: fittedContentWidth(Style.space(340))
+  // Prefer a tall scrollable card so alert/graph options are reachable.
+  contentHeight: fittedContentHeight(bodyCol.implicitHeight + Style.space(16), Style.space(560))
 
   PanelKeyCatcher {
     id: keyCatcher
@@ -71,21 +70,25 @@ KeyboardPanel {
     onCloseRequested: root.closeRequested()
 
     Flickable {
+      id: scroller
       anchors.fill: parent
       contentWidth: width
       contentHeight: bodyCol.implicitHeight
       clip: true
       boundsBehavior: Flickable.StopAtBounds
       interactive: contentHeight > height
+      flickableDirection: Flickable.VerticalFlick
 
       Column {
         id: bodyCol
-        width: parent.width
-        spacing: Style.space(6)
+        width: scroller.width
+        spacing: Style.space(5)
         leftPadding: Style.space(14)
         rightPadding: Style.space(14)
         topPadding: Style.space(12)
         bottomPadding: Style.space(12)
+
+        readonly property real innerW: width - leftPadding - rightPadding
 
         Text {
           text: "Sysmon settings"
@@ -95,17 +98,16 @@ KeyboardPanel {
           font.bold: true
         }
 
-        // ---- Visibility -------------------------------------------------
         Text {
           text: "Visible chips"
           color: root.fg
           font.family: root.fontFam
           font.pixelSize: Style.font.bodySmall
           font.bold: true
-          topPadding: Style.space(4)
+          topPadding: Style.space(6)
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "CPU usage"
@@ -115,7 +117,7 @@ KeyboardPanel {
           onToggled: root.setMetricVisible("showCpu", !root.boolSetting("showCpu", true))
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "CPU temp"
@@ -125,7 +127,7 @@ KeyboardPanel {
           onToggled: root.setMetricVisible("showCpuTemp", !root.boolSetting("showCpuTemp", true))
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "RAM"
@@ -135,7 +137,7 @@ KeyboardPanel {
           onToggled: root.setMetricVisible("showRam", !root.boolSetting("showRam", true))
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "GPU usage"
@@ -145,7 +147,7 @@ KeyboardPanel {
           onToggled: root.setMetricVisible("showGpu", !root.boolSetting("showGpu", true))
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "GPU temp"
@@ -155,17 +157,16 @@ KeyboardPanel {
           onToggled: root.setMetricVisible("showGpuTemp", !root.boolSetting("showGpuTemp", true))
         }
 
-        // ---- CPU --------------------------------------------------------
         Text {
           text: "CPU"
           color: root.fg
           font.family: root.fontFam
           font.pixelSize: Style.font.bodySmall
           font.bold: true
-          topPadding: Style.space(8)
+          topPadding: Style.space(10)
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Usage alert"
@@ -174,7 +175,7 @@ KeyboardPanel {
           onStepped: function(delta) { root.bumpInt("cpuWarnPercent", delta, 50, 100, 80) }
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Usage graph"
@@ -183,7 +184,7 @@ KeyboardPanel {
           onToggled: root.setBool("showCpuGraph", !root.boolSetting("showCpuGraph", true))
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Temp alert"
@@ -192,7 +193,7 @@ KeyboardPanel {
           onStepped: function(delta) { root.bumpInt("cpuTempWarnC", delta, 50, 110, 80) }
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Temp graph"
@@ -201,17 +202,16 @@ KeyboardPanel {
           onToggled: root.setBool("showCpuTempGraph", !root.boolSetting("showCpuTempGraph", true))
         }
 
-        // ---- RAM --------------------------------------------------------
         Text {
           text: "RAM"
           color: root.fg
           font.family: root.fontFam
           font.pixelSize: Style.font.bodySmall
           font.bold: true
-          topPadding: Style.space(8)
+          topPadding: Style.space(10)
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Usage alert"
@@ -220,7 +220,7 @@ KeyboardPanel {
           onStepped: function(delta) { root.bumpInt("ramWarnPercent", delta, 50, 100, 80) }
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Usage graph"
@@ -229,17 +229,16 @@ KeyboardPanel {
           onToggled: root.setBool("showRamGraph", !root.boolSetting("showRamGraph", true))
         }
 
-        // ---- GPU --------------------------------------------------------
         Text {
           text: "GPU"
           color: root.fg
           font.family: root.fontFam
           font.pixelSize: Style.font.bodySmall
           font.bold: true
-          topPadding: Style.space(8)
+          topPadding: Style.space(10)
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Usage alert"
@@ -248,7 +247,7 @@ KeyboardPanel {
           onStepped: function(delta) { root.bumpInt("gpuWarnPercent", delta, 50, 100, 80) }
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Usage graph"
@@ -257,7 +256,7 @@ KeyboardPanel {
           onToggled: root.setBool("showGpuGraph", !root.boolSetting("showGpuGraph", true))
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Temp alert"
@@ -266,7 +265,7 @@ KeyboardPanel {
           onStepped: function(delta) { root.bumpInt("gpuTempWarnC", delta, 50, 110, 80) }
         }
         SettingRow {
-          rowWidth: root.rowW
+          rowWidth: bodyCol.innerW
           foreground: root.fg
           fontFamily: root.fontFam
           label: "Temp graph"
