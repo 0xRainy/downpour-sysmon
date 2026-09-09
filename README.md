@@ -1,22 +1,12 @@
 # downpour-sysmon
 
 <p align="center">
-  <img src="preview.gif" alt="CPU temp, usage, and settings" width="360">
+  <img src="preview.gif" alt="downpour-sysmon" width="360">
 </p>
 
 A no-frills system monitor for [Omarchy](https://omarchy.org). One job: show what your machine is doing, then get out of the way.
 
 **CPU · RAM · GPU** — usage and temps as quiet bar chips with optional sparklines. Click a chip for detail (per-core CPU stats). Right-click for settings. Alerts turn red when something’s hot. Polls every second. That’s it.
-
-<p align="center">
-  <img src="preview-temp.png" alt="Per-core CPU temperature" width="360">
-  &nbsp;
-  <img src="preview-gpu.png" alt="GPU detail" width="360">
-</p>
-
-<p align="center">
-  <img src="preview-settings.png" alt="Settings" width="420">
-</p>
 
 ## Install
 
