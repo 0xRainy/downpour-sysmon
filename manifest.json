@@ -1,0 +1,116 @@
+{
+  "$schema": "https://raw.githubusercontent.com/omarchy/omarchy/main/schemas/plugin.json",
+  "schemaVersion": 1,
+  "id": "local.sysmon",
+  "name": "Sysmon",
+  "version": "1.0.0",
+  "author": "local",
+  "license": "MIT",
+  "description": "CPU, RAM, and GPU usage/temp chips with sparklines. Left-click details, right-click settings.",
+  "repository": "",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "Sysmon",
+    "description": "CPU / temp / RAM / GPU chips with graphs and alert colors",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "cpuWarnPercent": 80,
+      "cpuTempWarnC": 80,
+      "ramWarnPercent": 80,
+      "gpuWarnPercent": 80,
+      "gpuTempWarnC": 80,
+      "showCpu": true,
+      "showCpuTemp": true,
+      "showRam": true,
+      "showGpu": true,
+      "showGpuTemp": true,
+      "showCpuGraph": true,
+      "showCpuTempGraph": true,
+      "showRamGraph": true,
+      "showGpuGraph": true,
+      "showGpuTempGraph": true
+    },
+    "schema": [
+      {
+        "key": "cpuWarnPercent",
+        "type": "integer",
+        "label": "CPU usage alert (%)",
+        "min": 50,
+        "max": 100,
+        "step": 5,
+        "defaultValue": 80
+      },
+      {
+        "key": "cpuTempWarnC",
+        "type": "integer",
+        "label": "CPU temp alert (°C)",
+        "min": 50,
+        "max": 110,
+        "step": 5,
+        "defaultValue": 80
+      },
+      {
+        "key": "ramWarnPercent",
+        "type": "integer",
+        "label": "RAM usage alert (%)",
+        "min": 50,
+        "max": 100,
+        "step": 5,
+        "defaultValue": 80
+      },
+      {
+        "key": "gpuWarnPercent",
+        "type": "integer",
+        "label": "GPU usage alert (%)",
+        "min": 50,
+        "max": 100,
+        "step": 5,
+        "defaultValue": 80
+      },
+      {
+        "key": "gpuTempWarnC",
+        "type": "integer",
+        "label": "GPU temp alert (°C)",
+        "min": 50,
+        "max": 110,
+        "step": 5,
+        "defaultValue": 80
+      },
+      {
+        "key": "showCpuGraph",
+        "type": "boolean",
+        "label": "CPU usage graph",
+        "defaultValue": true
+      },
+      {
+        "key": "showCpuTempGraph",
+        "type": "boolean",
+        "label": "CPU temp graph",
+        "defaultValue": true
+      },
+      {
+        "key": "showRamGraph",
+        "type": "boolean",
+        "label": "RAM graph",
+        "defaultValue": true
+      },
+      {
+        "key": "showGpuGraph",
+        "type": "boolean",
+        "label": "GPU usage graph",
+        "defaultValue": true
+      },
+      {
+        "key": "showGpuTempGraph",
+        "type": "boolean",
+        "label": "GPU temp graph",
+        "defaultValue": true
+      }
+    ]
+  }
+}
