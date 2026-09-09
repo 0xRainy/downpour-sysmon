@@ -4,9 +4,6 @@ import qs.Ui
 
 KeyboardPanel {
   id: root
-  required property Item anchorItem
-  required property var owner
-  required property var bar
   property var settings: ({})
 
   signal closeRequested()
@@ -36,105 +33,14 @@ KeyboardPanel {
     root.settingChanged(key, next)
   }
 
+  readonly property color fg: bar ? bar.foreground : Color.foreground
+  readonly property string fontFam: bar ? bar.fontFamily : Style.font.family
+  readonly property real rowW: Style.space(320)
+
   centerOnBar: false
   focusTarget: keyCatcher
   contentWidth: fittedContentWidth(Style.space(360))
   contentHeight: fittedContentHeight(bodyCol.implicitHeight + Style.space(12))
-
-  component SettingRow: Item {
-    id: rowRoot
-    property string label: ""
-    property string valueText: ""
-    property bool showStepper: false
-    property bool showToggle: false
-    property bool toggleOn: false
-    signal stepped(int delta)
-    signal toggled()
-
-    width: bodyCol.width - bodyCol.leftPadding - bodyCol.rightPadding
-    height: Style.space(28)
-
-    Text {
-      anchors.left: parent.left
-      anchors.verticalCenter: parent.verticalCenter
-      text: rowRoot.label
-      color: root.bar ? root.bar.foreground : Color.foreground
-      font.family: root.bar ? root.bar.fontFamily : Style.font.family
-      font.pixelSize: Style.font.bodySmall
-    }
-
-    Row {
-      anchors.right: parent.right
-      anchors.verticalCenter: parent.verticalCenter
-      spacing: Style.space(6)
-
-      Text {
-        visible: rowRoot.showStepper
-        text: rowRoot.valueText
-        color: root.bar ? root.bar.foreground : Color.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.bodySmall
-        anchors.verticalCenter: parent.verticalCenter
-      }
-
-      Rectangle {
-        visible: rowRoot.showStepper
-        width: Style.space(22)
-        height: Style.space(22)
-        radius: 4
-        color: Qt.rgba(1, 1, 1, 0.08)
-        Text {
-          anchors.centerIn: parent
-          text: "−"
-          color: root.bar ? root.bar.foreground : Color.foreground
-        }
-        MouseArea {
-          anchors.fill: parent
-          cursorShape: Qt.PointingHandCursor
-          onClicked: rowRoot.stepped(-5)
-        }
-      }
-
-      Rectangle {
-        visible: rowRoot.showStepper
-        width: Style.space(22)
-        height: Style.space(22)
-        radius: 4
-        color: Qt.rgba(1, 1, 1, 0.08)
-        Text {
-          anchors.centerIn: parent
-          text: "+"
-          color: root.bar ? root.bar.foreground : Color.foreground
-        }
-        MouseArea {
-          anchors.fill: parent
-          cursorShape: Qt.PointingHandCursor
-          onClicked: rowRoot.stepped(5)
-        }
-      }
-
-      Rectangle {
-        visible: rowRoot.showToggle
-        width: Style.space(44)
-        height: Style.space(22)
-        radius: 11
-        color: rowRoot.toggleOn ? Qt.rgba(1, 1, 1, 0.28) : Qt.rgba(1, 1, 1, 0.08)
-        Rectangle {
-          width: Style.space(16)
-          height: Style.space(16)
-          radius: 8
-          anchors.verticalCenter: parent.verticalCenter
-          x: rowRoot.toggleOn ? parent.width - width - 3 : 3
-          color: root.bar ? root.bar.foreground : Color.foreground
-        }
-        MouseArea {
-          anchors.fill: parent
-          cursorShape: Qt.PointingHandCursor
-          onClicked: rowRoot.toggled()
-        }
-      }
-    }
-  }
 
   PanelKeyCatcher {
     id: keyCatcher
@@ -160,94 +66,124 @@ KeyboardPanel {
 
         Text {
           text: "Sysmon settings"
-          color: root.bar ? root.bar.foreground : Color.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
+          color: root.fg
+          font.family: root.fontFam
           font.pixelSize: Style.font.body
           font.bold: true
         }
 
         Text {
           text: "CPU"
-          color: root.bar ? root.bar.foreground : Color.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
+          color: root.fg
+          font.family: root.fontFam
           font.pixelSize: Style.font.caption
           opacity: 0.55
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Usage alert"
           showStepper: true
-          valueText: intSetting("cpuWarnPercent", 80) + "%"
+          valueText: root.intSetting("cpuWarnPercent", 80) + "%"
           onStepped: function(delta) { root.bumpInt("cpuWarnPercent", delta, 50, 100, 80) }
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Usage graph"
           showToggle: true
-          toggleOn: boolSetting("showCpuGraph", true)
-          onToggled: root.setBool("showCpuGraph", !boolSetting("showCpuGraph", true))
+          toggleOn: root.boolSetting("showCpuGraph", true)
+          onToggled: root.setBool("showCpuGraph", !root.boolSetting("showCpuGraph", true))
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Temp alert"
           showStepper: true
-          valueText: intSetting("cpuTempWarnC", 80) + "°C"
+          valueText: root.intSetting("cpuTempWarnC", 80) + "°C"
           onStepped: function(delta) { root.bumpInt("cpuTempWarnC", delta, 50, 110, 80) }
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Temp graph"
           showToggle: true
-          toggleOn: boolSetting("showCpuTempGraph", true)
-          onToggled: root.setBool("showCpuTempGraph", !boolSetting("showCpuTempGraph", true))
+          toggleOn: root.boolSetting("showCpuTempGraph", true)
+          onToggled: root.setBool("showCpuTempGraph", !root.boolSetting("showCpuTempGraph", true))
         }
 
         Text {
           text: "RAM"
-          color: root.bar ? root.bar.foreground : Color.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
+          color: root.fg
+          font.family: root.fontFam
           font.pixelSize: Style.font.caption
           opacity: 0.55
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Usage alert"
           showStepper: true
-          valueText: intSetting("ramWarnPercent", 80) + "%"
+          valueText: root.intSetting("ramWarnPercent", 80) + "%"
           onStepped: function(delta) { root.bumpInt("ramWarnPercent", delta, 50, 100, 80) }
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Usage graph"
           showToggle: true
-          toggleOn: boolSetting("showRamGraph", true)
-          onToggled: root.setBool("showRamGraph", !boolSetting("showRamGraph", true))
+          toggleOn: root.boolSetting("showRamGraph", true)
+          onToggled: root.setBool("showRamGraph", !root.boolSetting("showRamGraph", true))
         }
 
         Text {
           text: "GPU"
-          color: root.bar ? root.bar.foreground : Color.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
+          color: root.fg
+          font.family: root.fontFam
           font.pixelSize: Style.font.caption
           opacity: 0.55
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Usage alert"
           showStepper: true
-          valueText: intSetting("gpuWarnPercent", 80) + "%"
+          valueText: root.intSetting("gpuWarnPercent", 80) + "%"
           onStepped: function(delta) { root.bumpInt("gpuWarnPercent", delta, 50, 100, 80) }
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Usage graph"
           showToggle: true
-          toggleOn: boolSetting("showGpuGraph", true)
-          onToggled: root.setBool("showGpuGraph", !boolSetting("showGpuGraph", true))
+          toggleOn: root.boolSetting("showGpuGraph", true)
+          onToggled: root.setBool("showGpuGraph", !root.boolSetting("showGpuGraph", true))
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Temp alert"
           showStepper: true
-          valueText: intSetting("gpuTempWarnC", 80) + "°C"
+          valueText: root.intSetting("gpuTempWarnC", 80) + "°C"
           onStepped: function(delta) { root.bumpInt("gpuTempWarnC", delta, 50, 110, 80) }
         }
         SettingRow {
+          rowWidth: root.rowW
+          foreground: root.fg
+          fontFamily: root.fontFam
           label: "Temp graph"
           showToggle: true
-          toggleOn: boolSetting("showGpuTempGraph", true)
-          onToggled: root.setBool("showGpuTempGraph", !boolSetting("showGpuTempGraph", true))
+          toggleOn: root.boolSetting("showGpuTempGraph", true)
+          onToggled: root.setBool("showGpuTempGraph", !root.boolSetting("showGpuTempGraph", true))
         }
       }
     }

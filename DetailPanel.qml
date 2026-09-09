@@ -5,9 +5,6 @@ import "Model.js" as Model
 
 KeyboardPanel {
   id: root
-  required property Item anchorItem
-  required property var owner
-  required property var bar
   property string focusMetric: "cpu"
   property var sample: Model.emptySample()
 
