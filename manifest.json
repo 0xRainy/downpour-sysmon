@@ -144,6 +144,18 @@
         "type": "boolean",
         "label": "GPU temp graph",
         "defaultValue": true
+      },
+      {
+        "key": "showCpuFreq",
+        "type": "boolean",
+        "label": "Per-core CPU frequency",
+        "defaultValue": false
+      },
+      {
+        "key": "showGpuFreq",
+        "type": "boolean",
+        "label": "GPU frequency",
+        "defaultValue": false
       }
     ]
   },
