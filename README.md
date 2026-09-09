@@ -1,9 +1,12 @@
-# Downpour Sysmon
+# downpour-sysmon
 
-CPU, RAM, and GPU usage/temperature chips for the [Omarchy](https://omarchy.org) bar — sparklines, alert colors, detail popups, and a settings panel.
+<p align="center">
+  <img src="preview.png" alt="downpour-sysmon on Omarchy" width="420">
+</p>
 
-**ID:** `0xrainy.sysmon`  
-**Host theme:** named after `downpour`
+A no-frills system monitor for [Omarchy](https://omarchy.org). One job: show what your machine is doing, then get out of the way.
+
+**CPU · RAM · GPU** — usage and temps as quiet bar chips with optional sparklines. Click a chip for detail (per-core CPU stats). Right-click for settings. Alerts turn red when something’s hot. Polls every second. That’s it.
 
 ## Install
 
@@ -11,19 +14,6 @@ CPU, RAM, and GPU usage/temperature chips for the [Omarchy](https://omarchy.org)
 omarchy plugin add https://github.com/0xRainy/downpour-sysmon.git --enable
 ```
 
-Omarchy will ask which bar section to use (left / center / right).
+## Why it exists
 
-## Usage
-
-| Input | Action |
-|-------|--------|
-| Left-click a chip | Detail popup (per-core for CPU/temp; combined GPU view) |
-| Right-click any chip | Settings (visibility, alert thresholds, graphs) |
-
-At least one chip must stay visible so settings remain reachable.
-
-## Remove
-
-```sh
-omarchy plugin remove 0xrainy.sysmon
-```
+Built together for Omarchy — a small, focused monitor that stays simple on purpose.

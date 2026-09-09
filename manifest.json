@@ -2,11 +2,11 @@
   "$schema": "https://raw.githubusercontent.com/omarchy/omarchy/main/schemas/plugin.json",
   "schemaVersion": 1,
   "id": "0xrainy.sysmon",
-  "name": "Downpour Sysmon",
+  "name": "downpour-sysmon",
   "version": "1.0.0",
   "author": "0xRainy",
   "license": "MIT",
-  "description": "CPU, RAM, and GPU chips with sparklines for Omarchy \u2014 born on host downpour.",
+  "description": "A no-frills Omarchy system monitor: CPU, RAM, and GPU at a glance.",
   "repository": "https://github.com/0xRainy/downpour-sysmon",
   "kinds": [
     "bar-widget"
@@ -15,8 +15,8 @@
     "barWidget": "Widget.qml"
   },
   "barWidget": {
-    "displayName": "Downpour Sysmon",
-    "description": "CPU / temp / RAM / GPU chips with graphs and alert colors",
+    "displayName": "downpour-sysmon",
+    "description": "Simple CPU / RAM / GPU chips with sparklines and alerts",
     "category": "System",
     "allowMultiple": false,
     "defaultSection": "right",
