@@ -14,6 +14,24 @@ A no-frills system monitor for [Omarchy](https://omarchy.org). One job: show wha
 omarchy plugin add https://github.com/0xRainy/downpour-sysmon.git --enable
 ```
 
+## Usage
+
+- **Left-click** a chip — detail popup
+- **Right-click** — settings (visibility, alerts, graphs, frequencies)
+- **Escape** — close the popup
+
+## Configure
+
+```sh
+omarchy bar move downpour.sysmon --section right
+```
+
+## Remove
+
+```sh
+omarchy plugin remove downpour.sysmon
+```
+
 ## Why it exists
 
 Built together by **0xRainy** and **Grok** for Omarchy — a small, focused monitor that stays simple on purpose.
