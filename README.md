@@ -16,4 +16,4 @@ omarchy plugin add https://github.com/0xRainy/downpour-sysmon.git --enable
 
 ## Why it exists
 
-Built together for Omarchy — a small, focused monitor that stays simple on purpose.
+Built together by **0xRainy** and **Grok** for Omarchy — a small, focused monitor that stays simple on purpose.
