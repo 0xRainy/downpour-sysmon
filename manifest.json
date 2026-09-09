@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/omarchy/omarchy/main/schemas/plugin.json",
   "schemaVersion": 1,
-  "id": "0xrainy.sysmon",
+  "id": "downpour.sysmon",
   "name": "downpour-sysmon",
   "version": "1.0.0",
   "author": "0xRainy",

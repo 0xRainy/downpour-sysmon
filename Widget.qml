@@ -7,7 +7,7 @@ import "Model.js" as Model
 
 BarWidget {
   id: root
-  moduleName: "0xrainy.sysmon"
+  moduleName: "downpour.sysmon"
 
   property var sample: Model.emptySample()
   property var cpuHistory: []
