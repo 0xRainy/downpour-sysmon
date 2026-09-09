@@ -51,8 +51,14 @@ def cpu_percents(prev, cur):
 
 
 def read_coretemp():
+    """Temps keyed like usage: Core 0..N-1 = Linux logical CPU index.
+
+    Intel coretemp labels use architectural core IDs (0, 4, 8, … on hybrid
+    parts). Map each logical CPU through topology/core_id so the temp popup
+    lines up with the usage popup.
+    """
     package_c = None
-    cores = []
+    by_arch_id: dict[int, float] = {}
     for path in sorted(glob.glob("/sys/class/hwmon/hwmon*/temp*_input")):
         chip_path = os.path.join(os.path.dirname(path), "name")
         try:
@@ -74,13 +80,27 @@ def read_coretemp():
             package_c = celsius
             continue
         match = re.search(r"(\d+)\s*$", label)
-        core_id = int(match.group(1)) if match else len(cores)
+        if not match:
+            continue
+        by_arch_id[int(match.group(1))] = celsius
+
+    cores = []
+    for logical in range(256):
+        topo = Path(f"/sys/devices/system/cpu/cpu{logical}/topology/core_id")
+        if not topo.exists():
+            break
+        try:
+            arch_id = int(topo.read_text(encoding="utf-8").strip())
+        except (OSError, ValueError):
+            continue
+        if arch_id not in by_arch_id:
+            continue
         cores.append({
-            "id": core_id,
-            "label": label if label.lower().startswith("core") else f"Core {core_id}",
-            "celsius": round(celsius, 1),
+            "id": logical,
+            "label": f"Core {logical}",
+            "celsius": round(by_arch_id[arch_id], 1),
         })
-    cores.sort(key=lambda item: item["id"])
+
     if package_c is None and cores:
         package_c = sum(item["celsius"] for item in cores) / len(cores)
     return {
